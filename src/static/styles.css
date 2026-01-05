@@ -714,6 +714,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 5px;
+  color: var(--primary-text);
 }
 
 #dark-mode-toggle:hover {
