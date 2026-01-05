@@ -493,7 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
         shareLink = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
         break;
       case 'facebook':
-        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
+        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
         break;
       case 'email':
         const subject = encodeURIComponent(`Check out ${name} at Mergington High School`);
@@ -501,11 +501,16 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case 'copy':
         // Copy to clipboard
-        navigator.clipboard.writeText(`${shareText}\n${shareUrl}`).then(() => {
-          showMessage('Link copied to clipboard!', 'success');
-        }).catch(() => {
-          showMessage('Failed to copy link', 'error');
-        });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(`${shareText}\n${shareUrl}`).then(() => {
+            showMessage('Link copied to clipboard!', 'success');
+          }).catch(() => {
+            showMessage('Failed to copy link', 'error');
+          });
+        } else {
+          // Fallback for browsers without clipboard API
+          showMessage('Clipboard not supported in this browser', 'error');
+        }
         return;
       default:
         return;
